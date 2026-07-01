@@ -24,7 +24,7 @@ function ReportIncident() {
     setLoading(true);
     setError("");
     try {
-      await axios.post("/api/incidents", form, {
+      await axios.post("https://safewatch-production-9ec1.up.railway.app/api/incidents", form, {
         headers: { Authorization: `Bearer ${token}` }
       });
       navigate("/dashboard");
