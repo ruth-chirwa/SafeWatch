@@ -41,7 +41,7 @@ function Dashboard() {
   const handleStatusUpdate = async (id, status) => {
     setUpdating(id);
     try {
-      await axios.patch(`/api/incidents/${id}/status`, { status }, {
+      await axios.patch(`https://safewatch-production-9ec1.up.railway.app/api/incidents/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Update locally without refetching

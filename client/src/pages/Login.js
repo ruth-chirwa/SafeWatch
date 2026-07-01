@@ -17,7 +17,7 @@ function Login() {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.post("/api/auth/login", form);
+      const res = await axios.post("https://safewatch-production-9ec1.up.railway.app/api/auth/login", form);
       login(res.data.user, res.data.token);
       navigate("/dashboard");
     } catch (err) {

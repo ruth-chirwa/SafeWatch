@@ -16,7 +16,7 @@ function Register() {
     setLoading(true);
     setError("");
     try {
-      await axios.post("/api/auth/register", form);
+      await axios.post("https://safewatch-production-9ec1.up.railway.app/api/auth/register", form);
       setSuccess("Account created! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
