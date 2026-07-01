@@ -154,7 +154,6 @@ The app will open at `http://localhost:3000`
 |---|---|
 | `citizen` | Report incidents, view map and bulletins |
 | `safety_officer` | Everything above + verify/dismiss incidents + issue bulletins |
-| `admin` | Full access |
 
 ---
 
@@ -195,17 +194,23 @@ The app will open at `http://localhost:3000`
 
 ## 🔮 Future Features
 
-- 📱 Mobile app (React Native)
-- 🌐 Chichewa language support
-- 📧 Email notifications for high-severity incidents
-- 📊 Advanced analytics dashboard for officers
-- 🤝 Integration with Malawi Police Service reporting system
+- 👥 **Admin Dashboard** — manage all users, change roles, delete content
+- 🔄 **Role Management** — promote citizens to safety officers from the admin panel
+- 📊 **Advanced Analytics** — crime heatmap trends over time for admins
+- 📱 **Mobile App** — React Native version for iOS and Android
+- 🌐 **Chichewa Language Support** — full Malawi local language translation
+- 📧 **Email Notifications** — alerts for high severity incidents near saved locations
+- 🤝 **Malawi Police Integration** — connect with official police reporting system
 
 ---
 
+## 🌐 Live Demo
+- Frontend: https://safewatchmw.netlify.app
+- Backend API: https://safewatch-production-9ec1.up.railway.app
+
 ## 👩‍💻 Author
 
-**Michelle Lipenga**  
+**Ruth Chirwa**  
 Code Blossom Final Project — 2026
 
 ---
