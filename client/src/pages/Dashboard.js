@@ -27,8 +27,8 @@ function Dashboard() {
   const fetchData = async () => {
     try {
       const [incRes, bulRes] = await Promise.all([
-        axios.get("/api/incidents"),
-        axios.get("/api/bulletins")
+        axios.get("https://safewatch-production-9ec1.up.railway.app/api/incidents"),
+        axios.get("https://safewatch-production-9ec1.up.railway.app/api/bulletins")
       ]);
       setIncidents(incRes.data);
       setBulletins(bulRes.data);
