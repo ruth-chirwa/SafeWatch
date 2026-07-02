@@ -188,7 +188,24 @@ The app will open at `http://localhost:3000`
 
 ## 📸 Screenshots
 
-> _Add screenshots of your app here once deployed_
+### Home Page
+![Home Page](screenshots/Home.png)
+
+### Registration Page
+![Registration Page](screenshots/RegisterCitizen.png)
+![Registration Page](screenshots/RegisterOfficer.png)
+
+### Login Page
+![Login Page](screenshots/Login.png)
+
+### Dashboard
+![Dashboard](screenshots/Dashboard.png)
+
+### Report Incident
+![Report Incident](screenshots/ReportIncident.png)
+
+### Issue Safety Bulletin
+![Issue Bulletin](screenshots/IssueBulletin.png)
 
 ---
 
