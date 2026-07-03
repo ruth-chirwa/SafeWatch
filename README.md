@@ -1,6 +1,6 @@
 # 🛡️ SafeWatch — Community Incident Reporting & Personal Safety Platform
 
-SafeWatch is a full-stack web application that empowers communities to report, track, and respond to security incidents in real time. Built as a final project for **Code Blossom**, SafeWatch addresses a real-world problem faced by citizens in Malawi and across Sub-Saharan Africa — the lack of a structured, accessible platform for community safety intelligence.
+SafeWatch is a full-stack web application that empowers communities to report, track, and respond to security incidents in real time. Built as a final project for **Code Blossom**, SafeWatch addresses a real-world problem faced by citizens in Malawi — the lack of a structured, accessible platform for community safety intelligence.
 
 ---
 
