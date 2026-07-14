@@ -44,34 +44,28 @@ exports.getIncident = (req, res) => {
   );
 };
 
-// UPDATE incident
-exports.updateIncident = (req, res) => {
+// UPDATE incident status (officers only)
+exports.updateIncidentStatus = (req, res) => {
   const { id } = req.params;
-  const { title, description, category, severity } = req.body;
-  const userId = req.user.id;
-  const userRole = req.user.role;
+  const { status } = req.body;
 
-  // First check if incident exists and who owns it
-  db.query("SELECT * FROM incidents WHERE id = ?", [id], (err, results) => {
-    if (err) return res.status(500).json({ message: "Database error.", error: err });
-    if (results.length === 0) return res.status(404).json({ message: "Incident not found." });
+  if (req.user.role !== "safety_officer" && req.user.role !== "admin") {
+    return res.status(403).json({ message: "Only safety officers can update incident status." });
+  }
 
-    const incident = results[0];
+  if (!["verified", "dismissed", "pending"].includes(status)) {
+    return res.status(400).json({ message: "Invalid status value." });
+  }
 
-    // Only owner, safety officer or admin can update
-    if (incident.user_id !== userId && userRole !== "safety_officer" && userRole !== "admin") {
-      return res.status(403).json({ message: "You are not authorized to update this incident." });
+  db.query(
+    "UPDATE incidents SET status = ? WHERE id = ?",
+    [status, id],
+    (err, result) => {
+      if (err) return res.status(500).json({ message: "Could not update status.", error: err });
+      if (result.affectedRows === 0) return res.status(404).json({ message: "Incident not found." });
+      res.json({ message: `Incident ${status} successfully!` });
     }
-
-    db.query(
-      "UPDATE incidents SET title = ?, description = ?, category = ?, severity = ? WHERE id = ?",
-      [title, description, category, severity, id],
-      (err, result) => {
-        if (err) return res.status(500).json({ message: "Could not update incident.", error: err });
-        res.json({ message: "Incident updated successfully!" });
-      }
-    );
-  });
+  );
 };
 
 // DELETE incident
