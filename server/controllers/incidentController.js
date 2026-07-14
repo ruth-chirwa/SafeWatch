@@ -44,7 +44,35 @@ exports.getIncident = (req, res) => {
   );
 };
 
-// UPDATE incident status (officers only)
+// UPDATE incident
+exports.updateIncident = (req, res) => {
+  const { id } = req.params;
+  const { title, description, category, severity } = req.body;
+  const userId = req.user.id;
+  const userRole = req.user.role;
+
+  db.query("SELECT * FROM incidents WHERE id = ?", [id], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error.", error: err });
+    if (results.length === 0) return res.status(404).json({ message: "Incident not found." });
+
+    const incident = results[0];
+
+    if (incident.user_id !== userId && userRole !== "safety_officer" && userRole !== "admin") {
+      return res.status(403).json({ message: "You are not authorized to update this incident." });
+    }
+
+    db.query(
+      "UPDATE incidents SET title = ?, description = ?, category = ?, severity = ? WHERE id = ?",
+      [title, description, category, severity, id],
+      (err, result) => {
+        if (err) return res.status(500).json({ message: "Could not update incident.", error: err });
+        res.json({ message: "Incident updated successfully!" });
+      }
+    );
+  });
+};
+
+// UPDATE incident status 
 exports.updateIncidentStatus = (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
