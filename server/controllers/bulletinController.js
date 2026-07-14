@@ -52,33 +52,58 @@ exports.getBulletin = (req, res) => {
 exports.updateBulletin = (req, res) => {
   const { id } = req.params;
   const { title, message, area } = req.body;
+  const userId = req.user.id;
+  const userRole = req.user.role;
 
-  if (req.user.role !== "safety_officer" && req.user.role !== "admin") {
+  if (userRole !== "safety_officer" && userRole !== "admin") {
     return res.status(403).json({ message: "Only safety officers can update bulletins." });
   }
 
-  db.query(
-    "UPDATE bulletins SET title = ?, message = ?, area = ? WHERE id = ?",
-    [title, message, area, id],
-    (err, result) => {
-      if (err) return res.status(500).json({ message: "Could not update bulletin.", error: err });
-      if (result.affectedRows === 0) return res.status(404).json({ message: "Bulletin not found." });
-      res.json({ message: "Bulletin updated successfully!" });
+  db.query("SELECT * FROM bulletins WHERE id = ?", [id], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error.", error: err });
+    if (results.length === 0) return res.status(404).json({ message: "Bulletin not found." });
+
+    const bulletin = results[0];
+
+    // Only the officer who created it or an admin can update
+    if (bulletin.issued_by !== userId && userRole !== "admin") {
+      return res.status(403).json({ message: "You can only update your own bulletins." });
     }
-  );
+
+    db.query(
+      "UPDATE bulletins SET title = ?, message = ?, area = ? WHERE id = ?",
+      [title, message, area, id],
+      (err, result) => {
+        if (err) return res.status(500).json({ message: "Could not update bulletin.", error: err });
+        res.json({ message: "Bulletin updated successfully!" });
+      }
+    );
+  });
 };
 
 // DELETE bulletin
 exports.deleteBulletin = (req, res) => {
   const { id } = req.params;
+  const userId = req.user.id;
+  const userRole = req.user.role;
 
-  if (req.user.role !== "safety_officer" && req.user.role !== "admin") {
+  if (userRole !== "safety_officer" && userRole !== "admin") {
     return res.status(403).json({ message: "Only safety officers can delete bulletins." });
   }
 
-  db.query("DELETE FROM bulletins WHERE id = ?", [id], (err, result) => {
-    if (err) return res.status(500).json({ message: "Could not delete bulletin.", error: err });
-    if (result.affectedRows === 0) return res.status(404).json({ message: "Bulletin not found." });
-    res.json({ message: "Bulletin deleted successfully!" });
+  db.query("SELECT * FROM bulletins WHERE id = ?", [id], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error.", error: err });
+    if (results.length === 0) return res.status(404).json({ message: "Bulletin not found." });
+
+    const bulletin = results[0];
+
+    if (bulletin.issued_by !== userId && userRole !== "admin") {
+      return res.status(403).json({ message: "You can only delete your own bulletins." });
+    }
+
+    db.query("DELETE FROM bulletins WHERE id = ?", [id], (err, result) => {
+      if (err) return res.status(500).json({ message: "Could not delete bulletin.", error: err });
+      res.json({ message: "Bulletin deleted successfully!" });
+    });
   });
 };

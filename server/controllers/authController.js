@@ -21,7 +21,7 @@ exports.register = (req, res) => {
     // Insert new user
     db.query(
       "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-      [name, email, hashedPassword, role || "citizen"],
+      [name, email, hashedPassword, "citizen"],
       (err, result) => {
         if (err) return res.status(500).json({ message: "Could not create user.", error: err });
         res.status(201).json({ message: "Account created successfully!" });
